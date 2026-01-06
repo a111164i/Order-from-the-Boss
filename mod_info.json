@@ -4,7 +4,7 @@
 	"version":{"major":1, "minor":2, "patch":0},
 	"gameVersion":"0.98a-RC8",
 	"author":"a111164",
-	"description":"Angry about your ally not using burndrive to guarantee a kill? or keep his shield on even light years away from any enemy? Hold R and choose an ally as target, use Q to switch target if multiple modules overlaping. Meanwhile press W A S D to force the target to use shipsystem / vent / toggle shield / fire missile weapons.\nSupport keybinds with LunaSettings",
+	"description":"Angry about your ally not using burn drive to guarantee a kill? or keep his shield on even light years away from any enemy? Hold R and choose an ally as target, use Q to switch target if multiple modules overlaping. Meanwhile press W A S D to force the target to use ship system / vent / toggle shield / fire missile weapons.\n\nSupport keybinds with LunaSettings",
 	"dependencies": [
 		{
 			"id": "lw_lazylib",
