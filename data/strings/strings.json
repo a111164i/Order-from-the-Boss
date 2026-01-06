@@ -1,13 +1,18 @@
 {
 	"OrderftBoss":{
 
+		"use_system":"USE SHIP SYSTEM",
+		"vent_flux":"VENT FLUX",
+		"toggle_shield":"TOGGLE SHIELD",
+		"fire_missiles":"FIRE MISSILES",
+
 		"use_default_color": true,
 		"frame_alpha": "0.65",
 		"frame_color":"[50,250,50]",
 
-		"lock_shield_order_time": "3"
+		"lock_shieldorder_time": "3"
 
-	},
+	}
 
 
 }

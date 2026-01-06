@@ -4,15 +4,12 @@ package combat.plugins;
 import com.fs.starfarer.combat.ai.AI;
 import combat.OrderftBoss_BaseCombatEffect;
 import combat.OrderftBoss_KeepShieldOff;
-import data.scripts.util.MagicUI;
+import lunalib.lunaSettings.LunaSettings;
 import org.lazywizard.lazylib.ui.LazyFont;
-import org.lwjgl.input.Mouse;
-import utils.OrderftBoss_Utils;
 import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.combat.*;
 import com.fs.starfarer.api.input.InputEventAPI;
 import com.fs.starfarer.api.util.Misc;
-import org.lazywizard.lazylib.FastTrig;
 import org.lazywizard.lazylib.MathUtils;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
@@ -46,20 +43,27 @@ public class OrderftBoss_CombatPlugin extends BaseEveryFrameCombatPlugin {
   float elapsedTimeTotal = 0;
   float elapsedTimeFromLastOrder = 99;
 
-  int controlKey = Keyboard.KEY_R;
+  int controlKey = LunaSettings.getInt("order_from_the_boss_en", "OfB_keycode_r");
+  int KEY_Q = LunaSettings.getInt("order_from_the_boss_en", "OfB_keycode_q");
+  int KEY_W = LunaSettings.getInt("order_from_the_boss_en", "OfB_keycode_w");
+  int KEY_A = LunaSettings.getInt("order_from_the_boss_en", "OfB_keycode_a");
+  int KEY_S = LunaSettings.getInt("order_from_the_boss_en", "OfB_keycode_s");
+  int KEY_D = LunaSettings.getInt("order_from_the_boss_en", "OfB_keycode_d");
+
+
   Color frameColor = Misc.getPositiveHighlightColor();
 
   public OrderftBoss_CombatPlugin() {
     try {
       FONT1 = LazyFont.loadFont(ORBITRON_24AA);
-      string1 = FONT1.createText("W", frameColor);
-      string1_2 = FONT1.createText("USE SYSTEM", frameColor);
-      string2 = FONT1.createText("A", frameColor);
-      string2_2 = FONT1.createText("VENT FLUX", frameColor);
-      string3 = FONT1.createText("S", frameColor);
-      string3_2 = FONT1.createText("TOGGLE SHIELD OR PHASE CLOAK", frameColor);
-      string4 = FONT1.createText("D", frameColor);
-      string4_2 = FONT1.createText("FIRE MISSILE WEAPON", frameColor);
+      string1 = FONT1.createText(Keyboard.getKeyName(KEY_W), frameColor);
+      string1_2 = FONT1.createText(txt("use_system"), frameColor);
+      string2 = FONT1.createText(Keyboard.getKeyName(KEY_A), frameColor);
+      string2_2 = FONT1.createText(txt("vent_flux"), frameColor);
+      string3 = FONT1.createText(Keyboard.getKeyName(KEY_S), frameColor);
+      string3_2 = FONT1.createText(txt("toggle_shield"), frameColor);
+      string4 = FONT1.createText(Keyboard.getKeyName(KEY_D), frameColor);
+      string4_2 = FONT1.createText(txt("fire_missiles"), frameColor);
     }catch (Exception e1){
 
     }
@@ -122,7 +126,7 @@ public class OrderftBoss_CombatPlugin extends BaseEveryFrameCombatPlugin {
     for(InputEventAPI event : events){
       if(event.isKeyDownEvent() && Keyboard.isKeyDown(controlKey) ){
 
-        if(Keyboard.getEventKey() == Keyboard.KEY_Q){
+        if(Keyboard.getEventKey() == KEY_Q){
           selectNum += 1;
           elapsedTimeTotal = 0f;
           event.consume();
@@ -132,23 +136,21 @@ public class OrderftBoss_CombatPlugin extends BaseEveryFrameCombatPlugin {
 //          event.consume();
 //        }
 
-        if(Keyboard.getEventKey() == Keyboard.KEY_W){
+        if(Keyboard.getEventKey() == KEY_W){
           target.giveCommand(ShipCommand.USE_SYSTEM, null, 0);
           Global.getCombatEngine().addFloatingText(
-            target.getLocation(),
-            "USE SYSTEM !", 20f, frameColor, target, 1f, 1f);
+            target.getLocation(), txt("use_system")+"!!", 20f, frameColor, target, 1f, 1f);
           elapsedTimeFromLastOrder = 0f;
           //event.consume();
         }
-        if(Keyboard.getEventKey() == Keyboard.KEY_A){
+        if(Keyboard.getEventKey() == KEY_A){
           target.giveCommand(ShipCommand.VENT_FLUX, null, 0);
           Global.getCombatEngine().addFloatingText(
-            target.getLocation(),
-            "VENT FLUX !", 20f, frameColor, target, 1f, 1f);
+            target.getLocation(), txt("vent_flux") +"!!", 20f, frameColor, target, 1f, 1f);
           elapsedTimeFromLastOrder = 0f;
           //event.consume();
         }
-        if(Keyboard.getEventKey() == Keyboard.KEY_S){
+        if(Keyboard.getEventKey() == KEY_S){
           //多个不共存
           if(target.getCustomData().containsKey(OrderftBoss_KeepShieldOff.ID)){
             ((OrderftBoss_BaseCombatEffect)target.getCustomData().get(OrderftBoss_KeepShieldOff.ID)).shouldEnd = true;
@@ -158,9 +160,8 @@ public class OrderftBoss_CombatPlugin extends BaseEveryFrameCombatPlugin {
 
           target.giveCommand(ShipCommand.TOGGLE_SHIELD_OR_PHASE_CLOAK, null, 0);
           Global.getCombatEngine().addFloatingText(
-            target.getLocation(),
-            "TOGGLE SHIELD !", 20f, frameColor, target, 1f, 1f);
-          float lockTime = Float.parseFloat(txt("lock_shield_order_time"));
+            target.getLocation(), txt("toggle_shield")+"!!", 20f, frameColor, target, 1f, 1f);
+          float lockTime = LunaSettings.getInt("order_from_the_boss_en", "OfB_keep_shield_time");
           if(target.getShield() != null && target.getAIFlags() != null){
             if(target.getShield().isOn()){
               target.getAIFlags().setFlag(ShipwideAIFlags.AIFlags.DO_NOT_USE_SHIELDS, lockTime);
@@ -173,15 +174,17 @@ public class OrderftBoss_CombatPlugin extends BaseEveryFrameCombatPlugin {
           //event.consume();
         }
 
-        if(Keyboard.getEventKey() == Keyboard.KEY_D){
-          for(WeaponAPI w : target.getAllWeapons()){
+        if(Keyboard.getEventKey() == KEY_D){
+          for(WeaponAPI weap : target.getAllWeapons()){
             //排掉装饰武器等等
-            if(w.getSlot().getWeaponType() == WeaponAPI.WeaponType.DECORATIVE) continue;
-            if(w.getType() == WeaponAPI.WeaponType.DECORATIVE) continue;
+            if(weap.getSlot().getWeaponType() == WeaponAPI.WeaponType.DECORATIVE) continue;
+            if(weap.getType() == WeaponAPI.WeaponType.DECORATIVE) continue;
 
-            if(w.getType() == WeaponAPI.WeaponType.MISSILE){
-              w.setForceFireOneFrame(true);
+            if(weap.getType() == WeaponAPI.WeaponType.MISSILE){
+              weap.setForceFireOneFrame(true);
             }
+            Global.getCombatEngine().addFloatingText(
+                    target.getLocation(), txt("fire_missiles")+"!!", 20f, frameColor, target, 1f, 1f);
           }
 
           elapsedTimeFromLastOrder = 0f;

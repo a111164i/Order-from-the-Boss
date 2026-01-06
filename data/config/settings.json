@@ -1,17 +1,14 @@
 {
- "graphics":{
+ 	"graphics":{
 
 	},
-
 
 	
 	"plugins":{
 		"OrderftBoss_CombatPlugin":"combat.plugins.OrderftBoss_CombatPlugin",
-
 	},
 	
-	
-	
+
 	"designTypeColors":{
 
 	}

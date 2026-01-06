@@ -1,0 +1,11 @@
+fieldID,fieldName,fieldType,defaultValue,secondaryValue,fieldDescription,minValue,maxValue,tab
+,,,,,,,,
+OfB_header,Keybinds Header,Header,Key binds,,,,,
+OfB_keycode_r,Select target,Keycode,19,,,,,
+OfB_keycode_q,Switch between overlapped targets,Keycode,16,,,,,
+OfB_keycode_w,Use ship system,Keycode,17,,,,,
+OfB_keycode_a,Vent flux,Keycode,30,,,,,
+OfB_keycode_s,Toggle right-click system,Keycode,31,,,,,
+OfB_keycode_d,Fire all missile weapon,Keycode,32,,,,,
+OfB_header2,Other Setting,Header,Other Settings,,,,,
+OfB_keep_shield_time,Telling AI to keep on/off shield for how long after your gave order to toggle right click system,Int,5,,,0,20,
